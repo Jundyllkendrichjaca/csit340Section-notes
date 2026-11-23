@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import NoteCard from './NoteCard.jsx'
 
 function Notes() {
@@ -9,9 +9,9 @@ function Notes() {
   const [form, setForm] = useState({ title: '', body: '' })
   const [search, setSearch] = useState('')
 
-  const visibleNotes = notes.filter((note) =>
-    note.title.toLowerCase().includes(search.toLowerCase())
-  )
+  useEffect(() => {
+    localStorage.setItem('notes', JSON.stringify(notes))
+  }, [notes])
 
   function handleChange(e) {
     const { name, value } = e.target
@@ -30,6 +30,10 @@ function Notes() {
   function handleDelete(id) {
     setNotes(notes.filter((note) => note.id !== id))
   }
+
+  const visibleNotes = notes.filter((note) =>
+    note.title.toLowerCase().includes(search.toLowerCase())
+  )
 
   return (
     <div className="grid min-h-screen grid-cols-[420px_1fr]">
